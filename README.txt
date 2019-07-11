@@ -10,13 +10,11 @@ information pertaining to both this, and the original release.
 
 Compiling TinyMUD:
 
-The code is written in ANSI C.  However, the source code originates from
-1990.  At the time of this writing (April 2004), several ugly hacks were
+The code is written in C.  However, the source code originates from
+1990.  In April 2004 several ugly hacks were
 made to the original source code of 1.5.4f in order to enable it to compile
-under Linux kernel 2.2.19 with glibc 2.1.3.  There is no guarantee that the
-modified sources will compile under the operating systems cited. 
-Additionally,this has only been tested under Slackware 7.1, so your mileage
-may vary.  
+under Linux kernel 2.2.19 with glibc 2.1.3.  This was further hacked in July
+2019 to compile under Ubuntu 18.04 with GCC 7.4
 
 To compile the netmud server, and its companion utilitiies simply change to
 the src/ directory and type:
