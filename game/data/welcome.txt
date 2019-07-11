@@ -1,0 +1,6 @@
+
+Sandbox MUD (TinyMUD 1.5.4.1) located at:
+
+     telnet://your.domain.here:1701/
+
+Use 'connect <character> <password>' in order to access your character, 'WHO' to find out who's online, and QUIT to terminate this session.

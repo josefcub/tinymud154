@@ -1,0 +1,320 @@
+TinyMUD 1.5.4.1 Command Reference
+
+These are the commands available on the base TinyMUD distribution.  Some
+commands may be modified by compile-time defines specific to the local MUD.
+
+@boot
+@boot <player>
+Terminates <player>'s connection to the MUD.  Only WIZARDs may use this
+command.
+--
+@chown
+@chown <object>=<player>
+Changes ownership of <object> to <player>.  Player must own object in
+question, and recipient must be in the same room as both.  WIZARDs are not
+subject to this restriction.
+--
+@count
+@count <object>
+Shows a summary of the number of objects that <object owns (PLAYER), or
+contains (ROOM).  Player must own object in question, and WIZARDs are not
+subject to this restriction.
+--
+@create
+@create <object>=<cost>
+Create an object named <object>, and imbue it with <cost> value, in pennies. 
+Only BUILDERs may use this command.
+--
+@date
+@date
+Show the date according to the MUD server.
+--
+@describe
+@describe <object>=[description]
+Sets the description that others see when they look at <object>.
+--
+@dig
+@dig <name>
+Creates a new room named <name>.  Only BUILDERs may use this command.
+--
+@drop (throw)
+@drop <object>
+Drops an object, removing it from the player's inventory.
+--
+@dump
+@dump
+Save the database in memory to disk.  Only WIZARDs may use this command.
+--
+examine
+examine [<object>]
+Displays properties of object, or room the player is in if omitted.  Player
+must own object in question.  WIZARDs are not subject to this restriction.
+--
+@fail
+@fail <object>=[<message>]
+Set a message on an exit, object, or room which is displayed whenever a
+player fails to meet a lock's condition.
+--
+@find
+@find <name>
+Shows a listing of objects a player owns whose name contains <name>. 
+WIZARDs can @find anything on the MUD.
+--
+@force
+@force <player>=<action>
+Forces <player> to perform <action>, as if the player had typed it in
+themselves.  Only WIZARDs may use this command.
+--
+get (take)
+get <item>
+Retrieve an item from the room the player is currently in.  Wizards may 
+retrieve any item from anywhere on the MUD.  Only items (everyone) and 
+exits (BUILDERs) may be picked up.
+--
+give
+give <player>=<amount>
+Gives <player> the amount of pennies specified.
+--
+go (move, goto)
+go <direction>
+Go through an exit named <direction> and into another area.  Passage through
+an exit is subject to any locks the builder placed on it.
+--
+gripe
+gripe <message>
+Leave a complaint for the system administrator.
+--
+help
+help
+Shows the MUD's built-in help text.
+--
+home
+home
+Catapults a player back to their home, sans possessions.
+--
+inventory
+inventory
+Shows the player how much money they are carrying, and which items are on
+their person.
+--
+kill 
+kill <player>=[<cost>]
+Kills another player, sending them to their home without possessions. 
+<cost> increases the chances of successful murder, paid in pennies.
+--
+@link
+@link <object>=<destination>
+Set the destination for an exit, the home for an object, or the destination
+of dropped objects in a room.  Player must have permission (via the LINK_OK
+flag) to link to another's room.  Only BUILDERs may use this command.
+--
+@lock
+@lock <object>=<condition>
+Creates a lock on an object whose condition must be satisfied in order for a
+player to succeed in their action. 
+--
+look (read)
+look <object>
+Shows the description set for an object.
+--
+@mass_teleport
+@mass_teleport <destination>
+Sends every player on the MUD to the room specified by <destination>.  Only
+GOD may perform a mass teleport.
+--
+@name
+@name <object>[=<password>]
+Renames an object.  If the object is yourself, <password> is required to
+make the change.  Only WIZARDs may rename other players.
+--
+@newpassword
+@newpassword <player>=<password>
+Changes a player's password.  Only WIZARDs may use this command.
+--
+news
+news
+Shows any important messages concerning the system.  Wizards receive news
+related to administration.
+--
+@ofail
+@ofail <object>=[<message>]
+Sets the message that everyone in the room sees when a player fails the
+conditions on a locked object.
+--
+@open
+@open <name>[=<destination>]
+Creates exit <name>, and optionally links it to <destination>.  Only
+BUILDERs may use this command.
+--
+@osuccess
+@osuccess <object>=[<message>]
+Sets the message that everyone in the room sees when a player successfully
+passes the conditions of a lock.
+--
+OUTPUTPREFIX
+OUTPUTPREFIX prefix
+Sets the text that prepends a ZOMBIE's output.  Only ZOMBIEs may use this
+command. 
+--
+OUTPUTSUFFIX
+OUTPUTSUFFIX suffix
+Sets the text that is appended to a ZOMBIE's output.  Only ZOMBIEs may use
+this command.
+--
+@owned
+@owned <player> 
+Displays the objects that <player> owns.  Only WIZARDs may use this command.
+--
+page
+page <player>[=[:]<message>]
+Send a player a message, regardless of where that player is located. 
+Prefixing <message> with a colon (":") prepends the sender's name before
+<message>, allowing remote poses.
+--
+@password
+@password <old password>=<new password>
+Change a player's old password to the new password.  Both passwords are
+case-sensitive.
+--
+@pcreate
+@pcreate <player>=<password>
+Create a player with the given password.  Only WIZARDs may use this command.
+--
+pose (:)
+pose <message>
+Sends a message to every user in the same room as the player, with the
+player's name prepended.  Useful for simulation action.
+--
+@recycle
+@recycle <object>
+This changes an object's name, destroys its value, sets it UNWANTED, and
+moves it to a common garbage collection area.  Once recycled, an object can
+be @chowned by any other player, and re-used.
+--
+rob
+rob <player>
+Steals a penny from another player.
+--
+say (")
+say <message>
+Sends a message to every user in the same room as the player, as if the
+player had actually spoken.
+--
+score
+score
+Shows how many pennies the player is carrying.
+--
+@set
+@set <object>=[!]<flag>
+Gives <object> the attribute specified by <flag>.  Flag names and effects
+are listed below.
+
+Flag		Effect
+-------------------------------------------------------------------------------
+ABODE		Allows players to set their home to the room this is set on.
+BUILDER		Allows players to utilize construction-related commands and
+		expand the MUD.
+DARK		Makes an object invisible, or a room not show its contents.
+EXIT		Denotes an object players can utilize to move to another room.
+FEMALE		Marks a player as female.
+HAVEN		Set on a room, this prevents player @kills.  Set on a player,
+		this prevents others from bothering them with pages.
+LINK_OK		Set on a room, this denotes that an exit may use the room as
+		its destination.
+MALE		Marks a player as male.
+NEUTER		Marks a player as [gender] neuter.
+PLAYER		Denotes an object to which external connections can be made,
+		and commands be issued to interact with the MUD.
+REVERSE_WHO	Set on a player, this reverses the order of the WHO listing.
+ROOM		Denotes an object which can contain other objects.
+STICKY		Set on a room, this prevents objects dropped (that have a 
+		drop-to set) from going to their home locations.
+TEMPLE		Set on a room, this flag denotes a room in which objects can
+		be sacrificed (dropped), and money obtained.
+TABULAR_WHO	Set on a player, this prettifies the WHO output into a table.
+UNWANTED	Set on an object, this allows another player to @chown and
+		assume control of a room, or object.
+WIZARD		Set on a player by GOD, this flag allows a player to gain
+		access to restricted commands and additional abilities.
+ZOMBIE		Set on an object or a player (by a Wizard), this allows
+		use of the commands OUTPUTPREFIX and OUTPUTSUFFIX.
+-------------------------------------------------------------------------------
+
+FLAG NOTES:
+	
+	Flags may be typed in full, or abbreviated to the first letter.  The
+	MUD will know which flag is which, by the context.
+
+	Flags may be removed by prefixing an exclamation mark before the
+	flag name.
+
+	Flags EXIT, PLAYER, and ROOM may not be set by the @set command.
+
+	Only Wizards may designate players as BUILDERs.
+
+	Only GOD may set players as WIZARD.
+
+	Only Wizards may set a player as a ZOMBIE.
+
+--
+@shutdown
+@shutdown
+This disconnects all players, saves the database, and terminates the server
+and any concentrators.  Only WIZARDs may use this command.
+--
+@stats
+@stats [<player>]
+Shows the total number of objects in the universe.  If WIZARD is set on the
+player, shows any other player's total object count.
+--
+@success
+@success <object>=[<message>]
+Sets the message shown to a player when they successfully pass a lock placed
+on an object.
+--
+@teleport
+@teleport <object>[=<destination>]
+@teleport <destination>
+Teleports an object from one room to another.  In the first form, @teleport
+does exactly that, requiring permission by the player for both the object
+and the destination room.  In the second form, @teleport teleports the
+player itself to the destination room, requiring permission from the
+destination room.  WIZARDs suffer no such teleport restrictions.
+--
+@toad
+@toad <player>[=<recipient>]
+Turns a player into a slimy toad, removing it from the game.  Optionally
+transfers belongings to a recipient.  Only WIZARDs may use this command.
+--
+@tune
+@tune <parameter>=<value>
+Changes the way the MUD operates on the server, by altering parameters.  Only
+GOD may use this command.
+--
+@unlink
+@unlink <object>
+Un-links an object from its destination, home, or drop-to.
+--
+@unlock
+@unlock <object>
+Removes the conditional lock on an object.
+--
+@untoad
+@untoad <object>=<player>
+Turns a former toad back into a player.  Only WIZARDs may use this command. 
+--
+@version
+@version
+Displays the version of the TinyMUD server currently running.
+--
+@wall
+@wall <message>
+Displays a message to every connected player.  Only WIZARDs may use this
+command.
+--
+whisper
+whisper <player>=<message>
+Sends a private message to another player in the same room as the sender. 
+If QUIET_WHISPER is disenabled, others see that the sender has whispered,
+but they do not see the message.
+--

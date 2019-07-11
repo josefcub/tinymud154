@@ -1,0 +1,46 @@
+
+This is TinyMUD version 1.5.4.1,
+     a user-extensible, multi-user adventure game.
+
+Basics
+---------------------------------------------------------------------
+ get/take  <item>                Pick something up
+ home                            Go home, dropping everything.
+ look      [item]                See something's description.
+ move/go   <direction >          Travel between areas
+
+Character
+---------------------------------------------------------------------
+ @describe me=[description]      Let others see what you look like.
+ @password <oldpw>=<newpw>       Change your password.
+ @set      me=<male|female>      Set your gender.
+
+Communication
+---------------------------------------------------------------------
+ gripe     <message>             Complain to the management.
+ help                            Shows this help text.
+ news                            Shows important messages of the day.
+ page      <player>[=[:]<mess>]  Give someone far away a message.
+ pose/:    <message>             Have your character pose an action.
+ say/"     <message>             Tell everyone in the room something.
+ whisper   <player>=<message>    Tell someone in the room, privately.
+ 
+Money
+---------------------------------------------------------------------
+ give      <player>=<pennies>    Give money to someone.
+ inventory                       See what you are carrying.
+ kill      <player>=<cost>       Attempt murder.
+ rob       <player>              Steal money from someone.
+
+   Other commands are available for extending the universe.  Many of 
+these, as well as commands listed here, cost pennies.  Pennies can be
+obtained in many ways.
+
+   The words 'go' and  'move' need not be used to move from area to 
+area.  Simply type in the direction you wish to go, instead.
+
+   The names 'me' and 'here' are special.  'me' refers to you, and 'here'
+refers to wherever you happen to be.
+
+   Remember, no matter how bad it gets, you can always go home.
+

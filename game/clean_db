@@ -1,0 +1,80 @@
+#!/bin/sh
+####################
+#
+# clean_db - Cleans the database of all recycled objects automatically.
+#            Backs up dirty database as $DBFILE.OLD.  This intentionally
+#            looks like the restart script. ;-)
+#
+####################
+
+##########
+#
+# Basic Definitions.  Change for your setup.
+#
+##########
+
+# Locations for the game's files.
+GAME=$HOME/tinymud/game
+DBFILE=$GAME/data/tinymud.db
+
+# DBRef of the Recycler character, sans leading pound sigh.
+RECYCLER=3
+
+##########
+#
+# Thus begins our script.  You shouldn't have to edit anything below here.
+#
+##########
+
+echo "Database cleansing started at: `date`"
+
+# Check to see if this TinyMUD is still running.
+running="`ps aux | grep "netmud" | grep $USER | wc -l`"
+if [ $running -gt 1 ]; then
+  echo "        This MUD is still running.  Aborted."
+  exit 0
+fi
+
+# Get ready to start the MUD.
+cd $GAME
+
+
+# Add an entry to logs/commands, so we know who to blame. ;-)
+touch logs/commands
+echo "`date +"%-m/%e %R:%S"` CLEANING: by `whoami`(-1)" >> logs/commands
+
+# This is where we shuffle databases and verify the conditions necessary for a 
+# cleaning to take place.  It's fairly straightforward.  
+
+# First, take care of the oldest dump.
+if [ -r $DBFILE.OLD ]; then
+  rm -f $DBFILE.OLD
+else
+  echo "        Old database not available.  Proceeding."
+fi
+
+# Second, shuffle our newest database into position.
+if [ -r $DBFILE.NEW ]; then
+  mv -f $DBFILE $DBFILE.OLD
+  mv -f $DBFILE.NEW $DBFILE
+else
+  echo "        New database not available.  Proceeding."
+fi
+
+# Third, check for the existence of the obvious.
+if [ ! -r $DBFILE ]; then
+  echo "        Stock database not available.  Aborted."
+  exit 1
+fi
+
+# Fourth, a simple sanity check.
+end="`tail -1 $DBFILE`"
+if [ "$end" != '***END OF DUMP***' ]; then
+  echo "        Stock database appears corrupt.  Aborted."
+  exit 1
+fi
+
+# Finally, we're ready to clean the MUD's database.
+./extract all -$RECYCLER $RECYCLER <data/tinymud.db >data/tinymud.db.NEW
+
+echo "Database cleansing finished at: `date`"

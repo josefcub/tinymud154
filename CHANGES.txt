@@ -1,0 +1,384 @@
+------------------------------------------------------------------------
+
+Changes in TinyMUD Version (1.5.4.1) by AJC
+
+10-Jul-19
+
+     Fixed compile error in game.c with "union wait stat;". 
+
+28-Apr-04	
+
+    Fixed many of the source files in order to facilitate
+		compilation of the 1990 TinyMUD source code under
+		Linux 2.2.19/glibc-2.1.3, and fixed many unrelated
+		compiler warnings too.
+
+		Wrote a workaround for a crasher bug if you @boot your-
+		self.  Also, added another redundant safety check, you
+		can no longer @boot a player that is not connected.
+
+		Changed page output and response, and added page-pose
+    capabilities.  Prepend your message with ":" to page-pose.
+
+		Changed whisper's output and responses, adding posing
+		capabilities.  Prepend message with ":" to whispose.
+
+		Added a VERSION #define, and the command '@version'
+		to the system, to help identify the system.
+
+		Removed -DISLANDIA, -DTINYHELL, and -DTINKER from the
+		Makefile and sources.
+
+    Restructured the tarball found into discrete game/ and 
+    src/ subdirectories, and changed src/config.h to match.
+
+		game/data/help.txt changed to reflect version, and the
+		author's tastes.
+
+		Flags, costs, and such changed liberally in src/config.h 
+    as well, to more closely match this idiot's FuzzBall
+		experience.
+		
+		CMU, daytime, and nighttime restart scripts removed, 
+		replaced by restart script which functions similarly to 
+		the TinyMUCK/FuzzBall restart script.  
+
+		game/do_gripes edited for new directory structure.
+		
+		New script, clean_db, created to handle garbage collection.
+
+		README file updated for the new millenium.
+
+		Last but not least, I'm not calling this Islandia, main-
+		ly because while this originated as Islandia's source, 
+		I am not the owner/maintainer of Islandia MUD, and the 
+		name is not appropriate for this branch.
+
+------------------------------------------------------------------------
+
+Changes in Islandia Version (1.5.4f) by Fuzzy (Michael Mauldin)
+
+01-Sep-90	Added timestamp/usecnt feature. -DTIMESTAMPS
+
+		Every object created carries a timestamp, and every
+		object has a use count and last used stamp.  These
+		are shown by the 'examine' command.  For this purpose,\
+		'use' is defined as follows:
+	
+		PLAYERS		when they type a command
+		ROOMS		when they are entered
+		EXITS		when traversed or looked at (using 'look')
+		THINGS		when taken or looked at (using 'look')
+
+06-Oct-90	Added speedups.  Especially made the trailing newline
+		part of the packet for each line, this reduces the
+		number of calls to malloc by half, and improves the
+		network performance.
+
+		Added 'u<time>' option to extract.  Example:
+		
+		extract all u2mon	Removes things not used in 2 months
+
+		Added code to Gods WHO list to show Tinker/Bot flags.
+
+08-Oct-90	Added @date, @top, @tune
+
+		New commands (use sparingly, they chew CPU time and
+		lock up the whole system while they operate):
+		
+		--------------------------------
+
+		@date [ time [ = number ] ]
+
+		Summarize recent usage (numbers of objects with last
+		use since <time> ago).  Time is an integer followed by
+		a letter for [s]econds, [mi]nutes, [h]ours, [d]ays,
+		[w]eeks, [m]onths, or [y]ears.  Default time is 1
+		month.  Default unit is seconds.
+
+		Examples:
+
+		@date 1y   Find how much stuff has been used this year
+		@date 2d   Find how much stuff has been used in the past 2 days
+
+		--------------------------------
+
+		@top [ number [ = type ] ]
+
+		Show the top <number> objects of type <type> ranked in
+		order of use count.  Types are [p]layer, [e]xit,
+		[r]oom, and [t]hing.  If no type is given, all objects
+		are sorted together.
+
+		Examples:
+
+		@top 30 = rooms		Find 30 most used rooms
+		@top 20 = p		Find 20 most active players
+		@top 10			Find 10 most used objects alltogether
+
+		--------------------------------
+
+		@tune [ var = value ]
+
+		Sets the various timing parameters in the interface.c
+		program.  Variables are
+
+		slice		Length of time slice
+		burst		Maximum commands before slowdown
+		timeout		Select timeout when no commands in queue
+		poll		Select timeout when commands are in queue
+		extra		Allow over quota commands when otherwise idle
+		
+		Examples:
+
+		@tune
+		Current server settings:
+		  slice 1000 ms, burst 20 cmds
+		  timeout 100 ms, poll 10 ms, extra yes
+
+		@tune slice = 500
+
+
+------------------------------------------------------------------------
+
+Changes in Islandia Version (1.5.4) by Fuzzy (Michael Mauldin)
+
+25-Jun-90	Allow people to drop exits they are carrying that
+		have location -1 (this fixes a problem with exits
+		that get recycled while they are carried).
+
+9-Jun-90	Added failure message for whispers to objects
+		Made DUMPCORE on error the default (writes DB,
+		  then calls abort() with SIGILL enabled).  Set
+		  -DNODUMPCORE to inhibit core dumps.
+		Unified Islandia & TinyHELL sources, with switch
+		  in config.h
+		Added Virus (Robert Hood's) port concentrator.
+		Added connect.txt, for messages before the connect.
+		
+		There are now 5 text files associated with TinyMUD:
+			connect.txt	before logging in
+			motd.txt	after logging in
+			tinker.txt	after logging in for tinkers
+			news.txt	News command
+			help.txt	Help command
+
+17-Jun-90	Added Virus's concentrator code.
+		Fixed extract to allow player names instead of numbers,
+		  and added special commands: reachable, players,
+		  norecycle a<num> b<num>
+		
+------------------------------------------------------------------------
+
+Changes in Islandia/Hell Version (1.5.3C) by Random (Russ Smith)
+
+5-Jun-90	Made ABODE govern dropto
+		Allow players to DARKen objects that they own and are
+		  carrying, but not let them drop DARK objects in an
+		  area they couldn't link to.
+		Added UNWANTED flag, which allows people to @chown
+		  objects to themselves, subject to locking;
+		Made @chown understand 'me'
+		Made @recycle set its object to be UNWANTED
+		Made page and whisper check the WHO list and
+		  respond appropriately.
+
+------------------------------------------------------------------------
+
+Changes in Islandia Version (1.5.3B) by Fuzzy (Michael Mauldin)
+
+31-May-90	Added casts to signal arguments to get rid of
+		annoying warnings from gcc.
+
+28-May-90	Added @count & @recycle...@count is redundant with
+		@stat for players, but it can also be run by
+		non-tinkers, and @count of a room summarizes
+		contents: a new feature.  Note that @count is
+		less work than @find, because only the db array
+		is used, no strings are referenced.
+
+		Also fixed bug in extract:
+
+			extract all -<player>
+
+		now extracts player and his contents...before,
+		a bug/feature/omission caused only the player
+		to be extracted.
+
+		Syntax:
+
+		@count <player>
+		@count <room>
+
+		@recycle <thing> = <recipient>
+		@recycle <thing>		defaults to Recycler.
+
+		Recycling an object destroys its strings, and chowns
+		the object to a player called Recycler.  The idea is
+		that periodically you can "extract all -<recycler-num>"
+		to remove the recycled objects.
+
+		Added code to extract to check for isolated rooms
+		(no entrances, or no entrances, exits, or contents).
+
+		Fixed bug/feature in extract that caused it to complain
+		aboute unlinked exits being carried by players.  It no
+		longer complains about them.
+
+28-May-90	Added NOFAKES switch to forbid use of names that
+		are really first words from important system messages
+		(A, An, The, You, Your, Going, Huh?)
+
+25-May-90:	Added code to @bobble to chown all the players
+		objects to another user.
+
+20-May-90:	Added ROBOT flag...enables OUTPUTPREFIX/SUFFIX,
+		prevents ROBOT players from getting objects,
+		using exits, or entering rooms with ROBOT set.
+
+		Changed Wizards to Tinkers, Temples to Junkpiles,
+		and 'sacrifice' to 'donate'.  Added special
+		MOTD for Tinkers (file ../lib/tinker.txt).
+
+		Also changed @toad to @bobble.
+
+		Fixed problem with @link on links that are
+		set to *home*.
+
+		Fixed security hole that allowed a Wizard to
+		@force God...thus preventing
+
+		    @force Wizard = @set *Apprentice = WIZARD
+
+		Changed game.c so that on errors both a database
+		dump and a regular core dump are written.
+
+17-May-90:	Fixed bug where @name guest = foo bar caused
+		a crash because guest has no password (file set.c)
+
+		Added MOTD function, file ../lib/motd.txt
+		(files help.c, interface.c)
+
+		Added caching of hostnames so that Tinkers can do a
+		WHO without bogging down the server.
+
+11-May-90	Added Random's "page <name> = <msg>" command, to allow
+		sending messages simply...people otherwise used
+		
+		   @name me = <msg> / @page <name> / @name me = <desc>
+
+		anyway, so why not make it easy.
+
+------------------------------------------------------------------------
+
+Changes in Firefoot version (1.5.3A) (Scott Goehring):
+
+Added code to detach netmud from the terminal on startup (-DDETACH).
+
+Netmud now writes to a log file instead of stderr when detached.
+SIGUSR2 will close and reopen the log file.
+
+SIGTERM and SIGINT now cause netmud to shutdown cleanly instead of
+panicking (good for when your system is /etc/shutdown'd).
+
+Added parallel compile support to the makefile (if you're on a
+Sequent, compile with 'make P=\&').
+
+Log file entries are now preceded by the time of day.
+
+The status dumper (SIGUSR1) has been removed.
+
+Added Random's preregistration support (disabled create, @pcreate).
+
+Added OJ's examine hack.
+
+Added Random's @owned command.
+
+Panics now dump the contents of the sigcontext struct in hex to the
+logfile for debugging purposes.
+
+
+Changes in version 1.5.3-FF.1 (Scott Goehring):
+
+WHO can take an argument; only names with the same prefix as the
+argument are displayed.
+
+LINK_OK code modified; ABODE flag added.
+
+Player may select format and order of WHO listing.
+
+!-bug fixed properly.
+
+------------------------------------------------------------------------
+
+Changes in version 1.5.3:
+
+Gripes now get sent immediately to GOD when GOD_PRIV is defined.  They
+can be blocked by setting HAVEN.
+
+Limited @newpassword command to GOD when GOD_PRIV is defined.  Otherwise
+any WIZARD could subvert GOD.
+
+Added special case to do_name for changing the case of a player name.
+
+Added interface changes, GOD_PRIV hacks, and HAVEN bit. [These Changes
+from Random at TinyHELL]
+
+Got rid of LOOKUP_COST; replaced it with special FIND_COST and PAGE_COST.  
+find defaults to being very expensive.
+
+Added hash table for player name lookups.  This change should
+eliminate a lot of thrashing.
+
+Fixed ok_name test so that ! can appear after the beginning of a name.
+
+
+Changes in version 1.5.2:
+
+Added Stephen White's pronoun substitution code under #ifdef GENDER.
+
+Changed test for setting a created object's home to current room to
+require control of the room instead of linkability.
+
+Objects sent to rooms with @teleport go through dropto's.
+
+Boolean operators can no longer appear in names.
+
+Added rudimentary string compression under #ifdef COMPRESS.
+
+Fixed missing OUTPUTPREFIX and OUTPUTSUFFIX on WHO command in interface.
+
+Fixed various small bugs not caught in 1.5.1.
+
+
+Changes in version 1.5.1:
+
+@newpassword command added.  Password checking added.  1p charge for
+changing your own name eliminated to prevent confusion.
+
+Database structure modified to allow for boolean expressions as keys.
+USE_VFORK, DB_INITIAL_SIZE, and DB_DOUBLING #defines added to allow
+for greater system-dependent configuration.
+
+Whisper command added.
+
+Name formatting centralized.  Names now include flags.
+
+ok_player_name() modified to reject names longer than
+PLAYER_NAME_LIMIT.
+
+Boolean lock code added.
+
+
+Changes in version 1.4.2:
+
+Small bug fixes; okname() modified to reject names containing
+ARG_DELIMITER, democratized teleport added under #ifndef
+RESTRICTED_TELEPORT.
+
+
+Changes in version 1.4.1:
+
+Radically rewritten interface.c with fair command processing, command limits.
+
+------------------------------------------------------------------------
