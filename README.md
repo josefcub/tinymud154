@@ -1,6 +1,3 @@
-# tinymud154
-TinyMUD 1.5.4.1 - Multiplayer text-based online game from 1990.
-
 # Introduction
 
 This is TinyMUD version 1.5.4.1, a player-extensible multiuser adventure
