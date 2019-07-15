@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/file.h>
+#include <sys/time.h>
 #include <time.h>
 #include <signal.h>
 #include <sys/ioctl.h>
@@ -15,6 +16,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <unistd.h>
 
 #include "db.h"
 #include "interface.h"
@@ -615,6 +617,28 @@ void freeqs(struct descriptor_data *d)
     d->raw_input_at = 0;
 }
 
+
+int do_connect_msg(struct descriptor_data * d, const char *filename)
+{
+  FILE           *f;
+  char            buf[BUFFER_LEN];
+  char           *p;
+
+  if ((f = fopen(filename, "r")) == NULL)
+  {
+    return (0);
+  } else
+  {
+    while (fgets(buf, sizeof buf, f))
+    {
+      queue_string(d, (char *)buf);
+
+    }
+    fclose(f);
+    return (1);
+  }
+}
+
 void welcome_user(struct descriptor_data *d)
 { 
     queue_string (d, WELCOME_MESSAGE);
@@ -974,7 +998,7 @@ void dump_users(struct descriptor_data *e, char *user)
 			    "  %s%s", flagbuf, d->hostname);
 	    } else {
 		sprintf(buf,
-			"%s idle %d seconds",
+			"%s idle %ld seconds",
 			db[d->player].name,
 			now - d->last_time);
 		if (wizard) 
@@ -1051,26 +1075,7 @@ void announce_disconnect(dbref player)
     notify_except(db[loc].contents, player, buf);
 }
 #endif
-int do_connect_msg(struct descriptor_data * d, const char *filename)
-{
-  FILE           *f;
-  char            buf[BUFFER_LEN];
-  char           *p;
 
-  if ((f = fopen(filename, "r")) == NULL)
-  {
-    return (0);
-  } else
-  {
-    while (fgets(buf, sizeof buf, f))
-    {
-      queue_string(d, (char *)buf);
-
-    }
-    fclose(f);
-    return (1);
-  }
-}
 
 void do_tune (const char *varname, const char *valstr)
 {

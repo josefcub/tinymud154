@@ -4,8 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 
 #include "db.h"
+#include "externs.h"
 #include "config.h"
 
 struct object *db = 0;
@@ -122,7 +124,7 @@ dbref new_object(void)
     o->password = 0;
 #ifdef TIMESTAMPS
     /* Timestamp entries - Sep 1, 1990 by Fuzzy */
-    o->created = time (0);
+    o->created = time (NULL);
     o->lastused = 0;
     o->usecnt = 0;
 #endif 
@@ -258,23 +260,27 @@ dbref getref(FILE *f)
 {
     static char buf[DB_MSGLEN];
     int peekch;
+    char * fgets_result;
 
     /* Compiled in with or without timestamps, Sep 1, 1990 by Fuzzy */    
     if ((peekch = do_peek (f)) == '#' || peekch == '*') {
 	return (0);
     }
 
-    fgets(buf, sizeof(buf), f);
-    return(atol(buf));
+    fgets_result = fgets(buf, sizeof(buf), f);
+
+		return(atol(buf));
 }
 
 static const char *getstring_noalloc(FILE *f)
 {
     static char buf[DB_MSGLEN];
     char *p;
+    char * fgets_result;
 
-    fgets(buf, sizeof(buf), f);
-    for(p = buf; *p; p++) {
+    fgets_result = fgets(buf, sizeof(buf), f);
+
+		for(p = buf; *p; p++) {
 	if(*p == '\n') {
 	    *p = '\0';
 	    break;
@@ -435,6 +441,7 @@ dbref db_read(FILE *f)
     const char *end;
     static char buf[DB_MSGLEN];
     int peekch;
+    char * fgets_result;
 
 #ifdef PLAYER_LIST
     clear_players();
@@ -478,7 +485,7 @@ dbref db_read(FILE *f)
 	    /* Ignore extra input to next '#' or '*' */
 	    while ((peekch = do_peek (f)) != EOF &&
 	    	   peekch != '#' && peekch != '*') {
-		fgets (buf, sizeof(buf), f);
+           fgets_result = fgets (buf, sizeof(buf), f);
 	    }
 
 	    /* For downward compatibility with databases using the */

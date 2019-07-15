@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "db.h"
+#include "externs.h"
 
 #ifndef COMPRESS
 #define uncompress(x) (x)
@@ -53,7 +54,7 @@ int main(int argc, char **argv)
 	/* don't show it if it isn't owned by the right player */
 	if(owner != NOTHING && o->owner != owner) continue;
 
-	printf("#%d: %s [%s] at %s Pennies: %d Type: ",
+	printf("#%ld: %s [%s] at %s Pennies: %d Type: ",
 	       o - db, o->name, db[o->owner].name,
 	       unparse_object(owner, o->location),
 	       o->pennies);

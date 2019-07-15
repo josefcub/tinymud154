@@ -2,10 +2,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include <sys/param.h>
 
 #include "db.h"
+#include "externs.h"
 
 long atosec (const char *str);
 
@@ -18,7 +21,7 @@ static int norecycle = 0;	/* Exclude things in recycling center */
 static int inbuild = 0;		/* True when in main build_trans loop */
 static int recycler = 0;	/* Number of player "Recycler" */
 static int usecutoff = 0;	/* Max age for player/room */
-static long now = 0;		/* Time of the extraction */
+static unsigned long now = 0;		/* Time of the extraction */
 
 # define REACH_FLAG 0x40000000
 # define REACHABLE(X) (db[X].flags & REACH_FLAG)
@@ -357,7 +360,7 @@ static void do_write(void)
 
 int reach_lvl = 0;
 
-make_reachable (dbref x)
+void make_reachable (dbref x)
 {   dbref e, r;
     int i;
     
@@ -391,7 +394,7 @@ int main(int argc, char **argv)
     int top_ex;
     char *arg0;
     
-    now = time (0);
+    now = time (NULL);
 
     top_in = 0;
     top_ex = 0;

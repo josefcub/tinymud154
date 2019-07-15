@@ -40,6 +40,10 @@ extern void do_drop(dbref player, const char *name);
 extern dbref lookup_player(const char *name);
 extern void do_password(dbref player, const char *old, const char *newobj);
 
+/* From player_list.c */
+extern void clear_players(void);
+extern void add_player(dbref player);
+
 /* From predicates.h */
 extern int can_link_to(dbref who, object_flag_type what, dbref where);
 extern int could_doit(dbref player, dbref thing);

@@ -8,7 +8,7 @@
 #################################################################
 
 CC= cc
-OPTIM= --pedantic -g -O2
+OPTIM= -pedantic -g -O2
 
 #################################################################
 # Here's a list of DEFINEs that can be used to modify the 
